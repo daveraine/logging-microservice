@@ -1,5 +1,8 @@
 ﻿namespace LoggingMicroservice
 {
+    using LoggingMicroservice.Config;
+    using LoggingMicroservice.Core;
+    using LoggingMicroservice.Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -18,6 +21,10 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddSingleton<IMessageLog, TextFileMessageLog>();
+
+            services.Configure<MessageLogOptions>(Configuration.GetSection("MessageLog"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
