@@ -1,8 +1,10 @@
 ﻿namespace LoggingMicroservice.Infrastructure
 {
+    using System;
     using System.IO;
     using LoggingMicroservice.Config;
     using LoggingMicroservice.Core;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
 
@@ -11,16 +13,18 @@
     /// </summary>
     public class TextFileMessageLog : IMessageLog
     {
-        private readonly MessageLogOptions messageLogOptions;
+        private readonly string messageLogPath;
 
-        public TextFileMessageLog(IOptions<MessageLogOptions> messageLogOptionsAccessor)
+        public TextFileMessageLog(
+            IOptions<MessageLogOptions> messageLogOptionsAccessor,
+            IHostingEnvironment hostingEnvironment)
         {
-            messageLogOptions = messageLogOptionsAccessor.Value;
+            messageLogPath = Path.Combine(hostingEnvironment.WebRootPath, messageLogOptionsAccessor.Value.FilePath);
         }
 
         public void WriteEntry(Message message)
         {
-            File.AppendAllText(messageLogOptions.FilePath, JsonConvert.SerializeObject(message));
+            File.AppendAllText(messageLogPath, JsonConvert.SerializeObject(message) + Environment.NewLine);
         }
     }
 }
