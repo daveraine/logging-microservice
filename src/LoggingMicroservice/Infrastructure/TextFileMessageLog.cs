@@ -24,7 +24,7 @@
 
         public void WriteEntry(Message message)
         {
-            File.AppendAllText(messageLogPath, JsonConvert.SerializeObject(message) + Environment.NewLine);
+            File.AppendAllText(messageLogPath, $"{DateTime.UtcNow.ToString("s")} : {JsonConvert.SerializeObject(message)}{Environment.NewLine}");
         }
     }
 }
