@@ -1,5 +1,6 @@
 ﻿namespace LoggingMicroservice
 {
+    using System.Reflection;
     using LoggingMicroservice.Config;
     using LoggingMicroservice.Core;
     using LoggingMicroservice.Infrastructure;
@@ -7,6 +8,7 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using NSwag.AspNetCore;
 
     public class Startup
     {
@@ -36,6 +38,8 @@
             }
 
             app.UseMvc();
+
+            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, new SwaggerUiSettings());
         }
     }
 }
