@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using NSwag.AspNetCore;
 
     public class Startup
@@ -20,9 +21,12 @@
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, ILoggerFactory logger)
         {
-            services.AddMvc();
+            services.AddMvc(o =>
+            {
+                o.Filters.Add(new GlobalExceptionFilter(logger));
+            });
 
             services.AddSingleton<IMessageLog, TextFileMessageLog>();
 
