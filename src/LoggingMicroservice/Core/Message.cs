@@ -3,6 +3,9 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    /// <summary>
+    /// A log message
+    /// </summary>
     public class Message
     {
         [Range(1, int.MaxValue, ErrorMessage = "Please enter an Id greater than 0")]

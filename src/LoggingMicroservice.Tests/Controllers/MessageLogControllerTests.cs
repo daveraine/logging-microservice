@@ -1,6 +1,7 @@
 ﻿namespace LoggingMicroservice.Tests.Controllers
 {
     using System.Net;
+    using FakeItEasy;
     using LoggingMicroservice.Controllers;
     using LoggingMicroservice.Core;
     using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,12 @@
     public class MessageLogControllerTests
     {
         private MessageLogController controller;
+        private IMessageLog messageLog;
 
         public MessageLogControllerTests()
         {
-            controller = new MessageLogController();
+            messageLog = A.Fake<IMessageLog>();
+            controller = new MessageLogController(messageLog);
         }
 
         [Fact]
@@ -31,6 +34,15 @@
             var result = controller.Log(new Message()) as StatusCodeResult;
 
             Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+        }
+
+        [Fact]
+        public void Log_ValidModelState_MessageLogIsCalled()
+        {
+            var result = controller.Log(new Message());
+
+            A.CallTo(() => messageLog.WriteEntry(A<Message>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
 }

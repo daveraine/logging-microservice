@@ -7,6 +7,13 @@
     [Route("api/MessageLog")]
     public class MessageLogController : Controller
     {
+        private readonly IMessageLog messageLog;
+
+        public MessageLogController(IMessageLog messageLog)
+        {
+            this.messageLog = messageLog;
+        }
+
         [HttpPost]
         public IActionResult Log(Message message)
         {
@@ -14,6 +21,8 @@
             {
                 return BadRequest(ModelState);
             }
+
+            messageLog.WriteEntry(message);
 
             return Ok();
         }
