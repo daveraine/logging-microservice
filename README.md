@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/qrfj04cvnrv1n1nf?svg=true)](https://ci.appveyor.com/project/daveraine/logging-microservice)
+
 # Logging Microservice
 
 An ASP.NET Core 2.0 microservice exposing an API that writes log messages from external services to a text file.
